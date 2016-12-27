@@ -1,0 +1,11 @@
+#!/bin/sh
+set -e
+
+FILE_PATH=/etc/apt/sources.list.d
+FILE_RM=sogoupinyin.list
+
+if dpkg-maintscript-helper supports rm_conffile 2>/dev/null; then
+    dpkg-maintscript-helper rm_conffile ${FILE_PATH}/${FILE_RM} 1.1.0.0037 -- "$@"
+fi
+
+

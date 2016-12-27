@@ -1,0 +1,54 @@
+Source: sogoupinyin
+Section: non-free/utils
+Priority: optional
+Build-Depends:
+ debhelper (>= 10),
+Maintainer: Ubuntu Kylin Team <ubuntukylin-members@lists.launchpad.net>
+Uploaders:
+ Boyuan Yang <073plan@gmail.com>,
+Standards-Version: 3.9.8
+Homepage: https://pinyin.sogou.com/linux/
+Vcs-Git: https://github.com/debiancn/sogoupinyin
+Vcs-Browser: https://github.com/debiancn/sogoupinyin
+
+Package: sogoupinyin
+Architecture: amd64
+Depends:
+ fcitx (>= 1:4.2.8.3-3~),
+ fcitx-frontend-gtk2,
+ fcitx-frontend-gtk3,
+ fcitx-frontend-qt4,
+ fcitx-libs (>= 4.2.7),
+ fcitx-libs-qt (>= 4.2.7),
+ fcitx-module-kimpanel,
+ im-config,
+ libc6 (>= 2.8),
+ libgcc1 (>= 1:4.1.1),
+ libgdk-pixbuf2.0-0 (>= 2.22.0),
+ libglib2.0-0 (>= 2.12.0),
+ libidn11 (>= 1.13),
+ libnotify4 (>= 0.7.0),
+ libopencc2 | libopencc1,
+ libqt4-dbus (>= 4:4.8.0),
+ libqt4-declarative (>= 4:4.8.0),
+ libqt4-network (>= 4:4.8.0),
+ libqtcore4 (>= 4:4.8.0),
+ libqtgui4 (>= 4:4.8.0),
+ libstdc++6 (>= 4.6),
+ libx11-6,
+ lsb-release,
+ unzip,
+ x11-utils,
+ zlib1g (>= 1:1.2.0),
+Recommends:
+ dconf-gsettings-backend | gsettings-backend,
+ fcitx-frontend-qt5,
+ fonts-droid-fallback | fonts-droid,
+Description: Sogou Pinyin Input Method
+ Based on web search engine technology, Sogou Pinyin input method is
+ the next-generation input method designed for Internet users. As it
+ is backed with search engine technology, user input method can be
+ extremely fast, and it is much more advanced than other input method
+ engines in terms of the volume of the vocabulary database and its
+ accuracy. Sogou input method is the most popular input methods in
+ China, and Sogou promises it will always be free of charge.

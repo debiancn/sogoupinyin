@@ -1,0 +1,74 @@
+#!/bin/sh
+set -e
+
+detect_distro ()
+{
+local RELEASE_FILE=/etc/os-release
+if [ -r $RELEASE_FILE ]; then
+    local RELEASE_ID="$(grep '^ID=' $RELEASE_FILE | cut -f2 -d'=')"
+    local RELEASE_ID_LIKE="$(grep '^ID_LIKE=' $RELEASE_FILE | cut -f2 -d'=')"
+fi
+case $RELEASE_ID in
+    ubuntu|debian)
+        RELEASE_GENERIC=debian
+        ;;
+    fedora|rhel)
+        RELEASE_GENERIC=fedora
+        ;;
+    opensuse|suse)
+        RELEASE_GENERIC=opensuse
+        ;;
+    *)
+        if `echo $RELEASE_ID_LIKE | grep ubuntu >/dev/null` || `echo $RELEASE_ID_LIKE | grep debian >/dev/null`; then
+            RELEASE_GENERIC=debian
+        elif `echo $RELEASE_ID_LIKE | grep fedora >/dev/null` || `echo $RELEASE_ID_LIKE | grep rhel >/dev/null`; then
+            RELEASE_GENERIC=fedora
+        elif `echo $RELEASE_ID_LIKE | grep opensuse >/dev/null` || `echo $RELEASE_ID_LIKE | grep suse >/dev/null`; then
+            RELEASE_GENERIC=opensuse
+        else
+            RELEASE_GENERIC=unknown
+        fi
+        ;;
+esac
+}
+
+common_desktop_tasks ()
+{
+    if `which glib-compile-schemas >/dev/null 2>&1`; then glib-compile-schemas /usr/share/glib-2.0/schemas >/dev/null 2>&1 || true; fi
+    if `which update-desktop-database >/dev/null 2>&1`; then update-desktop-database -q || true; fi
+    if `which update-mime-database > /dev/null 2>&1`; then update-mime-database /usr/share/mime || true; fi
+}
+
+PACKAGE=sogoupinyin
+FILE_MD5SUM=47d621d5a840d525a1663c12b2ab9e50
+FILE_PATH=/etc/apt/sources.list.d
+FILE_NAME=ubuntukylin.list
+
+detect_distro
+
+if [ "$RELEASE_GENERIC" = "debian" ]; then
+    if dpkg-maintscript-helper supports rm_conffile 2>/dev/null; then
+        dpkg-maintscript-helper rm_conffile ${FILE_PATH}/${PACKAGE}.list 1.1.0.0037 -- "$@"
+    fi
+    if [ "$1" = configure ] ; then
+        rm -f /etc/xdg/autostart/fcitx-qimpanel-autostart.desktop
+        # on fresh installs, symlink the keyring to /etc
+        if [ ! -e /etc/apt/trusted.gpg.d/sogou-archive-keyring.gpg ]; then
+            true
+#            ln -s /usr/share/keyrings/sogou-archive-keyring.gpg \
+#                  /etc/apt/trusted.gpg.d/sogou-archive-keyring.gpg
+        fi
+        if ! `md5sum ${FILE_PATH}/*.list 2>/dev/null | grep $FILE_MD5SUM | grep $FILE_NAME >/dev/null`; then
+            true
+#            cp /usr/share/${PACKAGE}/${PACKAGE}.list /etc/apt/sources.list.d/
+        fi
+    fi
+
+elif [ "$RELEASE_GENERIC" = "fedora" ]; then
+    common_desktop_tasks
+    alternatives --set xinputrc /etc/X11/xinit/xinput.d/fcitx.conf
+#elif [ "$RELEASE_GENERIC" = "opensuse" ]; then
+#    common_desktop_tasks
+else
+    common_desktop_tasks
+fi

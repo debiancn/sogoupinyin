@@ -1,0 +1,8 @@
+sogoupinyin (2.1.0.0082+repack.debiancn-1) unstable; urgency=medium
+
+  * Initial release.
+  * Repack for Debian unstable.
+    - Disable sogou keyring.
+    - Disable UbuntuKylin sources.list.
+
+ -- Boyuan Yang <073plan@gmail.com>  Tue, 27 Dec 2016 17:17:50 +0800
