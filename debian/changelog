@@ -1,3 +1,9 @@
+sogoupinyin (2.1.0.0086+repack.debiancn-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Boyuan Yang <073plan@gmail.com>  Sun, 16 Apr 2017 10:42:36 +0800
+
 sogoupinyin (2.1.0.0082+repack.debiancn-1) unstable; urgency=medium
 
   * Initial release.
